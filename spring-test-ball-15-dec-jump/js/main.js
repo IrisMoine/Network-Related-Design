@@ -1,8 +1,6 @@
-// ball
-let x = 0;
-let speed = 3;
+let jumper;
 
-let jumper = new Jumper ();
+let BALLS = [];
 
 let spring1 = new Spring();
 let handleLeft = {
@@ -14,30 +12,44 @@ let handleRight = {
   y: 100,
 };
 
+
+
 let groundLevel = 0.5;
 
 function setup() {
+  
   pixelDensity(1);
   createCanvas(windowWidth, windowHeight);
+
+  jumper = new Jumper();
+  BALLS.push(new Ball(-50, 200, 3));
+
   noStroke();
 }
 
 function draw() {
-  jumper.run();
+  
   push();
   background(220);
   fill(255);
   drawGround();
-  translate(mouseX, groundLevel * height);
+
+  translate(jumper.pos.x, jumper.pos.y);
   drawPlayer();
   pop();
-  ellipse(x, 200, 100, 100);
+  
 
-  if(x > width){
-    speed = -3;
+  jumper.pos.x = mouseX;
+
+  if(mouseIsPressed) {
+    jumper.jump(15);
   }
 
-  x = x + speed;
+  jumper.run();
+
+  for (let ball of BALLS) {
+    ball.run();
+  }
 }
 
 function fillGradient() {
@@ -83,13 +95,16 @@ function drawPlayer() {
   endShape(CLOSE);
 }
 
-// jump keypressed
-function keyPressed(){
-jumper.vel.y = -3;
+function mousePressed() {
+  // jumper.jump();
+  // BALLS.push(new Ball())
+}
+function createBall(x, y, speed) {
+  BALLS.push(new Ball(x, y, speed))
 }
 
 function drawGround() {
-  rect(0,groundLevel*height, width, height);
+  rect(0, groundLevel * height, width, height);
 }
 
 function windowResized() {
