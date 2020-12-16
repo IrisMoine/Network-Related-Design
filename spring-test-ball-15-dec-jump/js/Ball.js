@@ -44,8 +44,9 @@ class Ball {
     let newCollisionState = distance < jumper.radius + this.radius;
 
     if(newCollisionState !== this.collided && newCollisionState === true) {
-      createBall(this.pos.x, this.pos.y, -this.speed);
+      createBall(this.pos.x-100, this.pos.y, this.speed);
       // this.speed*=2;
+      this.pos.x += 100;
     }
       
 
